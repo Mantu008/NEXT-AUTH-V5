@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
     const router = useRouter();
-    const handledbconnect = async () => {
+    const handledbconnect = () => {
         toast.success("Redirected To Login page..");
         router.push("/login");
     };

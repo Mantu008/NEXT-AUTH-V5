@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 
-const Register = async () => {
+const Register = () => {
     const handleSubmit = (event: any) => {
         event.preventDefault(); // Prevents the default form submission
         toast.success("Register Sucessfully 👍");
