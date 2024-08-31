@@ -68,25 +68,25 @@ export default function Home() {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                         <div className="p-6 bg-white rounded-lg shadow-lg">
                             <p className="italic mb-4">
-                                "This app has revolutionized the way we manage
-                                our products. It's simple, intuitive, and
-                                extremely powerful."
+                                &quot;This app has revolutionized the way we
+                                manage our products. It&apos;s simple,
+                                intuitive, and extremely powerful.&quot;
                             </p>
                             <p className="font-bold">- Jane Doe</p>
                         </div>
                         <div className="p-6 bg-white rounded-lg shadow-lg">
                             <p className="italic mb-4">
-                                "The analytics dashboard gives me everything I
-                                need to track my product performance in
-                                real-time."
+                                &quot;The analytics dashboard gives me
+                                everything I need to track my product
+                                performance in real-time.&quot;
                             </p>
                             <p className="font-bold">- John Smith</p>
                         </div>
                         <div className="p-6 bg-white rounded-lg shadow-lg">
                             <p className="italic mb-4">
-                                "Collaborating with my team has never been
+                                &quot;Collaborating with my team has never been
                                 easier. We can assign roles and manage
-                                permissions effortlessly."
+                                permissions effortlessly.&quot;
                             </p>
                             <p className="font-bold">- Sarah Wilson</p>
                         </div>
