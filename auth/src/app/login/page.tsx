@@ -1,12 +1,14 @@
 "use client";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
+import { FormEvent } from "react";
 
 const Login = () => {
-    const handleSubmit = (event: any) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevents the default form submission
         toast.success("Login Successful 👍");
     };
@@ -54,7 +56,7 @@ const Login = () => {
                     </Button>
                 </form>
                 <p className="text-center text-gray-500 text-sm">
-                    Don't have an account?{" "}
+                    Don&#39;t have an account?{" "}
                     <Link
                         href="/register"
                         className="text-gray-900 hover:text-gray-700 font-medium"

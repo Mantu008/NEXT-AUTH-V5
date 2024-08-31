@@ -1,15 +1,18 @@
 "use client";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
+import { FormEvent } from "react";
 
 const Register = () => {
-    const handleSubmit = (event: any) => {
+    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevents the default form submission
-        toast.success("Register Sucessfully 👍");
+        toast.success("Registered Successfully 👍");
     };
+
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-black py-6 px-4 sm:px-6 lg:px-8">
             <Toaster />
