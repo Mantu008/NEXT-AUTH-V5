@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -8,9 +9,25 @@ import toast, { Toaster } from "react-hot-toast";
 import { FormEvent } from "react";
 
 const Register = () => {
+    // State variables for form inputs
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevents the default form submission
+
+        // Here you can add logic to handle form submission, such as making an API request
         toast.success("Registered Successfully 👍");
+
+        console.log(firstName, lastName, email, password);
+
+        // Reset form values
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
     };
 
     return (
@@ -34,6 +51,8 @@ const Register = () => {
                                 id="firstName"
                                 name="firstName"
                                 placeholder="John"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
                                 className="w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
                             />
                         </div>
@@ -49,6 +68,8 @@ const Register = () => {
                                 id="lastName"
                                 name="lastName"
                                 placeholder="Doe"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
                                 className="w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
                             />
                         </div>
@@ -65,6 +86,8 @@ const Register = () => {
                             id="email"
                             name="email"
                             placeholder="example@example.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                             className="w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
                         />
                     </div>
@@ -80,6 +103,8 @@ const Register = () => {
                             id="password"
                             name="password"
                             placeholder="••••••••"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             className="w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
                         />
                     </div>

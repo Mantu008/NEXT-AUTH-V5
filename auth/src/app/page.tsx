@@ -13,8 +13,7 @@ export default function Home() {
     };
 
     return (
-        <div className="flex flex-col justify-center items-center mt-[200px] gap-10">
-            <h1>hello</h1>
+        <div className="">
             <Button variant="outline" onClick={handledbconnect}>
                 Login
             </Button>

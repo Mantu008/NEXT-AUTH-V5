@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { FormEvent } from "react";
+import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 
 const Login = () => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -64,6 +65,21 @@ const Login = () => {
                         Register
                     </Link>
                 </p>
+
+                <section className="flex flex-row gap-5  justify-center text-center">
+                    <Button>
+                        <IconBrandGithub />
+                        <span>GitHub</span>
+                    </Button>
+                    <Button>
+                        <IconBrandGoogle />
+                        <span>Google</span>
+                    </Button>
+                    <Button>
+                        <IconBrandGithub />
+                        <span>GitHub</span>
+                    </Button>
+                </section>
             </div>
         </div>
     );
