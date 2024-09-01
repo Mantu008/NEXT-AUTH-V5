@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { FormEvent } from "react";
+import { register } from "@/action/user";
 
 const Register = () => {
     // State variables for form inputs
@@ -18,10 +19,21 @@ const Register = () => {
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevents the default form submission
 
-        // Here you can add logic to handle form submission, such as making an API request
-        toast.success("Registered Successfully 👍");
+        if (!firstName || !lastName || !email || !password) {
+            toast.error("Please Fill All the Fields");
+            return;
+        }
 
-        console.log(firstName, lastName, email, password);
+        const user = {
+            firstName,
+            lastName,
+            email,
+            password,
+        };
+
+        register(user);
+
+        toast.success("Registered Successfully 👍");
 
         // Reset form values
         setFirstName("");
