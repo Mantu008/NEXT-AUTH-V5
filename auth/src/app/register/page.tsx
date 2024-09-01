@@ -8,6 +8,7 @@ import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { FormEvent } from "react";
 import { register } from "@/action/user";
+import { useRouter } from "next/navigation";
 
 const Register = () => {
     // State variables for form inputs
@@ -15,8 +16,9 @@ const Register = () => {
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const route = useRouter();
 
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevents the default form submission
 
         if (!firstName || !lastName || !email || !password) {
@@ -31,7 +33,14 @@ const Register = () => {
             password,
         };
 
-        register(user);
+        const createdUser = await register(user);
+
+        console.log(createdUser);
+
+        if (createdUser.userExist) {
+            toast.error("User Already Exist With Given Email");
+            return;
+        }
 
         toast.success("Registered Successfully 👍");
 
@@ -40,6 +49,7 @@ const Register = () => {
         setLastName("");
         setEmail("");
         setPassword("");
+        route.push("/login");
     };
 
     return (

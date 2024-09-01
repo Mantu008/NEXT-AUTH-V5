@@ -25,7 +25,9 @@ export const register = async (data: userData) => {
 
     const existingUsers = await User.findOne({ email });
 
-    if (existingUsers) throw new Error("User Already Exists");
+    if (existingUsers) {
+        return { userExist: true }
+    }
 
     //incrept the password 
 
@@ -34,5 +36,7 @@ export const register = async (data: userData) => {
     await User.create({ firstName, lastName, email, password: hashPassword })
 
     console.log('User Registered Sucessfully 🥂🥂')
+
+    return { createUser: true }
 
 }
