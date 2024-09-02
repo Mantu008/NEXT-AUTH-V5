@@ -21,7 +21,6 @@ const NavBar = () => {
             const sessionData = await getAuthSession();
             const user = sessionData?.user || null;
             setSessionData(user);
-            console.log(user);
         };
 
         fetchSession();

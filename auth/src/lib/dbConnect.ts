@@ -1,7 +1,4 @@
-let mongoose: any;
-if (typeof window === 'undefined') {
-  mongoose = require('mongoose');
-}
+import mongoose from "mongoose";
 
 type ConnectionObject = {
   isConnected?: number;
@@ -10,11 +7,6 @@ type ConnectionObject = {
 const connection: ConnectionObject = {};
 
 async function dbconnect(): Promise<void> {
-  // Ensure this runs only on the server
-  if (typeof window !== 'undefined') {
-    return; // Exit if in the browser environment
-  }
-
   // Check if already connected
   if (connection.isConnected) {
     console.log("Already Connected to Database");

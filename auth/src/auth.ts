@@ -1,10 +1,8 @@
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import dbconnect from "./lib/dbConnect";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-import { User } from "./models/userModel";
-import bcrypt from 'bcryptjs';
+import axios from "axios"
 
 declare module "next-auth" {
     interface Session {
@@ -50,39 +48,23 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     throw new CredentialsSignin("Please Provide Both Email & Password");
                 }
 
-                await dbconnect();
+                const response = await axios.post("http://localhost:3000/api/signin", {
+                    email,
+                    password
+                });
 
-                const user = await User.findOne({ email }).select("+password +role");
-
-                if (!user) {
-                    throw new Error("Invalid email or password");
-                }
-
-                if (!user.password) {
-                    throw new Error("Invalid email or password");
-                }
-
-                const isMatchPassword = await bcrypt.compare(password, user.password);
-
-                if (!isMatchPassword) {
-                    throw new Error("Password did not match");
-                }
-
-                const userData = {
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    role: user.role,
-                    id: user._id.toString()  // Convert _id to string
-                }
+                const userData = response.data;
+                console.log("User Data:", userData);
 
                 return userData;
             }
         })
     ],
+
     pages: {
         signIn: "/login"
     },
+
     callbacks: {
         async jwt({ token, user }) {
             if (user) {
@@ -90,6 +72,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             }
             return token;
         },
+
         async session({ session, token }) {
             if (token?.sub && token?.role) {
                 session.user.id = token.sub as string; // Explicitly cast `token.sub` as string
@@ -99,54 +82,30 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
 
         signIn: async ({ user, account }) => {
-
-            if (account?.provider === "google") {
+            if (account?.provider === "google" || account?.provider === "github") {
                 try {
-
                     const { email, name, image, id } = user;
-                    await dbconnect();
-                    const userExists = await User.findOne({ email });
-
-                    if (!userExists) {
-                        await User.create({ email, name, image, authProviderId: id })
-                    } else {
-                        return true;
-                    }
-
+                    const response = await axios.post("http://localhost:3000/api/providerLogin", {
+                        email,
+                        name,
+                        image,
+                        id
+                    });
+                    console.log(response);
+                    return true;  // Ensure to return true on successful sign-in
                 } catch (error) {
-                    throw new Error("Error while creating user")
-                }
-            }
-
-            if (account?.provider === "github") {
-                try {
-
-                    const { email, name, image, id } = user;
-                    await dbconnect();
-                    const userExists = await User.findOne({ email });
-
-                    if (!userExists) {
-                        await User.create({ email, name, image, authProviderId: id })
-                    } else {
-                        return true;
-                    }
-
-                } catch (error) {
-                    throw new Error("Error while creating user")
+                    console.error("Error while creating user:", error);
+                    return false;
                 }
             }
 
             if (account?.provider === "credentials") {
-
                 return true;
-
-
-            } else {
-                return false;
             }
 
-
+            return false;
         }
+
     }
 });
 

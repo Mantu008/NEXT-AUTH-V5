@@ -1,41 +1,39 @@
-let mongoose;
-if (typeof window === 'undefined') {
-  mongoose = require("mongoose");
-}
+import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
-    required: true,
+    require: true,
   },
 
   lastName: {
     type: String,
-    required: true,
+    require: true,
   },
 
   email: {
     type: String,
-    required: true,
+    require: true,
   },
 
   password: {
     type: String,
-    select: false,
+    select: false, // Prevents the password from being selected by default
   },
 
   role: {
     type: String,
-    default: "user",
+    default: "user"
   },
 
   image: {
-    type: String,
+    type: String
   },
 
   authProviderId: {
-    type: String,
+    type: String
   }
+
 });
 
-export const User = mongoose?.models?.User || mongoose?.model?.("User", userSchema);
+export const User = mongoose.models?.User || mongoose.model("User", userSchema);
