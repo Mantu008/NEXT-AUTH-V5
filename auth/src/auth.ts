@@ -41,6 +41,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 password: { label: "Password", type: "password" }
             },
             authorize: async (credentials) => {
+                const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
                 const email = credentials.email as string | undefined;
                 const password = credentials.password as string | undefined;
 
@@ -48,7 +49,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                     throw new CredentialsSignin("Please Provide Both Email & Password");
                 }
 
-                const response = await axios.post("http://localhost:3000/api/signin", {
+                const response = await axios.post(`${baseUrl}/api/signin`, {
                     email,
                     password
                 });
@@ -84,8 +85,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         signIn: async ({ user, account }) => {
             if (account?.provider === "google" || account?.provider === "github") {
                 try {
+                    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
                     const { email, name, image, id } = user;
-                    const response = await axios.post("http://localhost:3000/api/providerLogin", {
+                    const response = await axios.post(`${baseUrl}/api/providerLogin`, {
                         email,
                         name,
                         image,
