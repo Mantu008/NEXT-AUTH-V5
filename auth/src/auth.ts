@@ -1,4 +1,3 @@
-
 import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import dbconnect from "./lib/dbConnect";
