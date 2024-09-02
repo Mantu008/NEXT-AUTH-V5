@@ -28,8 +28,13 @@ const NavBar = () => {
 
     const handleLogout = async () => {
         await logOut();
-        router.push("/login"); // Redirect to home page after logout
+        router.push("/login"); // Redirect to login page after logout
     };
+
+    // Get the full URL
+    const fullUrl = typeof window !== "undefined" ? window.location.href : "";
+
+    console.log(fullUrl);
 
     return (
         <nav className="bg-gray-800 shadow-md">
