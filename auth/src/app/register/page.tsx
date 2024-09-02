@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -9,14 +9,30 @@ import toast, { Toaster } from "react-hot-toast";
 import { FormEvent } from "react";
 import { register } from "@/action/user";
 import { useRouter } from "next/navigation";
+import { ClipLoader } from "react-spinners"; // Import the spinner
+import { getAuthSession } from "@/lib/user";
 
-const Register = () => {
+const Register = async () => {
     // State variables for form inputs
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const route = useRouter();
+    const [loading, setLoading] = useState(false); // State to manage spinner
+    const router = useRouter();
+
+    useEffect(() => {
+        const checkUser = async () => {
+            const sessionData = await getAuthSession();
+            const user = sessionData?.user;
+
+            if (user) {
+                router.push("/");
+            }
+        };
+
+        checkUser();
+    }, []);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevents the default form submission
@@ -33,23 +49,30 @@ const Register = () => {
             password,
         };
 
-        const createdUser = await register(user);
+        try {
+            setLoading(true); // Start spinner
+            const createdUser = await register(user);
+            console.log(createdUser);
 
-        console.log(createdUser);
+            if (createdUser.userExist) {
+                toast.error("User Already Exist With Given Email");
+                return;
+            }
 
-        if (createdUser.userExist) {
-            toast.error("User Already Exist With Given Email");
-            return;
+            toast.success("Registered Successfully 👍");
+
+            // Reset form values
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPassword("");
+            router.push("/login");
+        } catch (e: any) {
+            toast.error("Server error...");
+            console.log(e.message);
+        } finally {
+            setLoading(false); // Stop spinner
         }
-
-        toast.success("Registered Successfully 👍");
-
-        // Reset form values
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setPassword("");
-        route.push("/login");
     };
 
     return (
@@ -130,8 +153,16 @@ const Register = () => {
                             className="w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
                         />
                     </div>
-                    <Button className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
-                        Sign Up
+                    <Button
+                        type="submit"
+                        className="w-full bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                        disabled={loading} // Disable button during loading
+                    >
+                        {loading ? (
+                            <ClipLoader color="white" size={20} /> // Show spinner
+                        ) : (
+                            "Sign Up" // Show button text when not loading
+                        )}
                     </Button>
                 </form>
                 <p className="text-center text-gray-500 text-sm">

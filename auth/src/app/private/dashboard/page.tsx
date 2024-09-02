@@ -1,8 +1,24 @@
 "use client";
-import { useState } from "react";
+import { getAuthSession } from "@/lib/user";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const Dashboard = () => {
     const [welcomeMessage] = useState("Welcome to your Dashboard!");
+    const router = useRouter();
+
+    useEffect(() => {
+        const fetchSession = async () => {
+            const sessionData = await getAuthSession();
+            const user = sessionData?.user;
+
+            if (!user) {
+                router.push("/login"); // Redirect to home page if the user is not authenticated
+            }
+        };
+
+        fetchSession();
+    }, []);
 
     return (
         <div className="min-h-screen bg-black text-white p-8">

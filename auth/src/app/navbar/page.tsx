@@ -1,15 +1,35 @@
 "use client";
 import Link from "next/link";
-import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { getAuthSession } from "@/lib/user";
+import { useEffect, useState } from "react";
+import { logOut } from "@/action/user";
+
+interface User {
+    id: string;
+    role: string;
+}
 
 const NavBar = () => {
     const router = useRouter();
+    const [sessionData, setSessionData] = useState<User | null>(null);
+    const pathname = usePathname(); // Get the current path
 
-    const handleLogout = () => {
-        // Logic for logging out the user
-        router.push("/login"); // Redirect to login page after logout
+    useEffect(() => {
+        const fetchSession = async () => {
+            const sessionData = await getAuthSession();
+            const user = sessionData?.user || null;
+            setSessionData(user);
+            console.log(user);
+        };
+
+        fetchSession();
+    }, [pathname]); // This runs every time the URL changes (pathname changes)
+
+    const handleLogout = async () => {
+        await logOut();
+        router.push("/login"); // Redirect to home page after logout
     };
 
     return (
@@ -30,30 +50,37 @@ const NavBar = () => {
                     </div>
                     {/* Right side with navigation links */}
                     <div className="flex items-center space-x-6">
-                        <Link
-                            href="/private/dashboard"
-                            className="text-gray-100 hover:text-white transition duration-300"
-                        >
-                            Dashboard
-                        </Link>
-                        <Link
-                            href="/register"
-                            className="text-gray-100 hover:text-white transition duration-300"
-                        >
-                            Register
-                        </Link>
-                        <Link
-                            href="/login"
-                            className="text-gray-100 transition duration-300"
-                        >
-                            Login
-                        </Link>
-                        <Button
-                            className="text-gray-100 border-gray-100 hover:bg-gray-700 transition duration-300"
-                            onClick={handleLogout}
-                        >
-                            Logout
-                        </Button>
+                        {sessionData ? (
+                            <>
+                                <Link
+                                    href="/private/dashboard"
+                                    className="text-gray-100 hover:text-white transition duration-300"
+                                >
+                                    Dashboard
+                                </Link>
+                                <Button
+                                    className="text-gray-100 border-gray-100 hover:bg-gray-700 transition duration-300"
+                                    onClick={handleLogout}
+                                >
+                                    Logout
+                                </Button>
+                            </>
+                        ) : (
+                            <>
+                                <Link
+                                    href="/register"
+                                    className="text-gray-100 hover:text-white transition duration-300"
+                                >
+                                    Register
+                                </Link>
+                                <Link
+                                    href="/login"
+                                    className="text-gray-100 hover:text-white transition duration-300"
+                                >
+                                    Login
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

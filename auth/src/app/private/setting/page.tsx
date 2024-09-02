@@ -1,6 +1,25 @@
 "use client";
 
+import { getAuthSession } from "@/lib/user";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 const Setting = () => {
+    const router = useRouter();
+
+    useEffect(() => {
+        const fetchSession = async () => {
+            const sessionData = await getAuthSession();
+            const user = sessionData?.user;
+
+            if (!user) {
+                router.push("/login"); // Redirect to home page if the user is not authenticated
+            }
+        };
+
+        fetchSession();
+    }, []);
+
     return (
         <div className="min-h-screen bg-black text-white p-8">
             <div className="max-w-4xl mx-auto">

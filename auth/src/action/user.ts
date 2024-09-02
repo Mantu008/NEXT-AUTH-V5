@@ -1,8 +1,12 @@
+
+
 "use server"
 
+import { signIn, signOut } from "@/auth"
 import dbconnect from "@/lib/dbConnect"
 import { User } from "@/models/userModel"
-import bcrypt from 'bcrypt'
+import bcrypt from 'bcryptjs'
+import { CredentialsSignin } from "next-auth"
 
 interface userData {
     firstName: string,
@@ -11,7 +15,10 @@ interface userData {
     password: string
 }
 
-export const register = async (data: userData) => {
+
+
+
+const register = async (data: userData) => {
     const firstName = data.firstName
     const lastName = data.lastName
     const email = data.email
@@ -40,3 +47,45 @@ export const register = async (data: userData) => {
     return { createUser: true }
 
 }
+
+
+
+interface UserLoginData {
+    email: string;
+    password: string;
+}
+
+const login = async (data: UserLoginData) => {
+    const { email, password } = data;
+
+    if (!email || !password) {
+        throw new Error("Please fill all the fields");
+    }
+
+    try {
+        const result = await signIn("credentials", {
+            redirect: false,
+            callbackUrl: "/",
+            email,
+            password,
+        });
+
+
+        if (result?.error) {
+            throw new Error(result.error);
+        }
+
+        return result; // Return the result to the component
+
+    } catch (error: any) {
+        console.error("Login error:", error);
+        throw new Error(error.message || "Login failed");
+    }
+};
+
+const logOut = async () => {
+    await signOut();
+}
+
+
+export { register, login, logOut };
