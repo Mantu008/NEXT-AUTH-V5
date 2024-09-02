@@ -39,21 +39,21 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             name: 'Credentials',
             credentials: {
                 email: { label: "Email", type: "email" },
-                password: { label: "Password", type: "password" },
-                baseUrl: {}
+                password: { label: "Password", type: "password" }
             },
             authorize: async (credentials) => {
                 // const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
                 const email = credentials.email as string | undefined;
                 const password = credentials.password as string | undefined;
-                const baseUrl = credentials.baseUrl as string | undefined;
 
 
                 if (!email || !password) {
                     throw new CredentialsSignin("Please Provide Both Email & Password");
                 }
 
-                const response = await axios.post(`${baseUrl}/api/signin`, {
+
+
+                const response = await axios.post("https://next-auth-v5-git-main-mantu008s-projects.vercel.app/api/signin", {
                     email,
                     password
                 });
@@ -90,7 +90,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 try {
                     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
                     const { email, name, image, id } = user;
-                    const response = await axios.post(`${baseUrl}/api/providerLogin`, {
+                    const response = await axios.post("https://next-auth-v5-git-main-mantu008s-projects.vercel.app/api/providerLogin", {
                         email,
                         name,
                         image,

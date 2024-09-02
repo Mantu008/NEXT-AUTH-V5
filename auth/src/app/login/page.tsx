@@ -41,15 +41,9 @@ const Login = () => {
             return;
         }
 
-        const baseUrl =
-            typeof window !== "undefined"
-                ? `${window.location.protocol}//${window.location.host}`
-                : "";
-
         const user = {
             email,
             password,
-            baseUrl,
         };
 
         try {
