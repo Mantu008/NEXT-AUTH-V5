@@ -16,8 +16,6 @@ interface userData {
 }
 
 
-
-
 const register = async (data: userData) => {
     const firstName = data.firstName
     const lastName = data.lastName
@@ -53,10 +51,11 @@ const register = async (data: userData) => {
 interface UserLoginData {
     email: string;
     password: string;
+    baseUrl: string;
 }
 
 const login = async (data: UserLoginData) => {
-    const { email, password } = data;
+    const { email, password, baseUrl } = data;
 
     if (!email || !password) {
         throw new Error("Please fill all the fields");
@@ -68,6 +67,7 @@ const login = async (data: UserLoginData) => {
             callbackUrl: "/",
             email,
             password,
+            baseUrl,
         });
 
 

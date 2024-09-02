@@ -2,18 +2,8 @@ import NextAuth, { CredentialsSignin } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
-import axios from "axios";
-import path from "path";
+import axios from "axios"
 
-// Helper function to construct the base URL dynamically
-const getBaseUrl = () => {
-    const envBaseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-    if (envBaseUrl) {
-        return envBaseUrl;
-    }
-    // Fallback to a default base URL if needed
-    return "http://localhost:3000";
-};
 
 declare module "next-auth" {
     interface Session {
@@ -49,31 +39,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             name: 'Credentials',
             credentials: {
                 email: { label: "Email", type: "email" },
-                password: { label: "Password", type: "password" }
+                password: { label: "Password", type: "password" },
+                baseUrl: {}
             },
             authorize: async (credentials) => {
-                const baseUrl = getBaseUrl();
+                // const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
                 const email = credentials.email as string | undefined;
                 const password = credentials.password as string | undefined;
+                const baseUrl = credentials.baseUrl as string | undefined;
+
 
                 if (!email || !password) {
                     throw new CredentialsSignin("Please Provide Both Email & Password");
                 }
 
-                try {
-                    const response = await axios.post(`${baseUrl}/api/signin`, {
-                        email,
-                        password
-                    });
+                const response = await axios.post(`${baseUrl}/api/signin`, {
+                    email,
+                    password
+                });
 
-                    const userData = response.data;
-                    console.log("User Data:", userData);
+                const userData = response.data;
 
-                    return userData;
-                } catch (error) {
-                    console.error("Error during sign in:", error);
-                    throw new CredentialsSignin("Failed to sign in");
-                }
+                return userData;
             }
         })
     ],
@@ -101,7 +88,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         signIn: async ({ user, account }) => {
             if (account?.provider === "google" || account?.provider === "github") {
                 try {
-                    const baseUrl = getBaseUrl();
+                    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
                     const { email, name, image, id } = user;
                     const response = await axios.post(`${baseUrl}/api/providerLogin`, {
                         email,
@@ -123,5 +110,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
             return false;
         }
+
     }
 });
+

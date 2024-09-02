@@ -31,11 +31,6 @@ const NavBar = () => {
         router.push("/login"); // Redirect to login page after logout
     };
 
-    // Get the full URL
-    const fullUrl = typeof window !== "undefined" ? window.location.href : "";
-
-    console.log(fullUrl);
-
     return (
         <nav className="bg-gray-800 shadow-md">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
