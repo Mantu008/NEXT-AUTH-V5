@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { ClipLoader } from "react-spinners"; // Import the spinner
 import { getAuthSession } from "@/lib/user";
 
-const Register = async () => {
+const Register = () => {
     // State variables for form inputs
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
@@ -52,7 +52,6 @@ const Register = async () => {
         try {
             setLoading(true); // Start spinner
             const createdUser = await register(user);
-            console.log(createdUser);
 
             if (createdUser.userExist) {
                 toast.error("User Already Exist With Given Email");
