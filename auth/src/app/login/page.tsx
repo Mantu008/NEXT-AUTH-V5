@@ -18,7 +18,6 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 

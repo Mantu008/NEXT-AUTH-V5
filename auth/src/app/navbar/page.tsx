@@ -1,10 +1,9 @@
 "use client";
 import Link from "next/link";
-import React from "react";
-import { useRouter, usePathname } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { getAuthSession } from "@/lib/user";
-import { useEffect, useState } from "react";
 import { logOut } from "@/action/user";
 
 interface User {
@@ -14,24 +13,36 @@ interface User {
 
 const NavBar = () => {
     const router = useRouter();
-    const [sessionData, setSessionData] = useState<User | null>(null);
-    const pathname = usePathname(); // Get the current path
+    const [sessionData, setSessionData] = useState<User | null | undefined>(
+        undefined
+    ); // Initial state is `undefined`
 
+    // Fetch session data on component mount
     useEffect(() => {
         const fetchSession = async () => {
-            const sessionData = await getAuthSession();
-            console.log("Session Data: ", sessionData); // Debugging output
-            const user = sessionData?.user || null;
-            setSessionData(user);
+            try {
+                const session = await getAuthSession();
+                setSessionData(session?.user || null); // Set session data if user exists, or `null` otherwise
+            } catch (error) {
+                console.error("Failed to fetch session:", error);
+                setSessionData(null); // Set to null if there's an error (treated as not logged in)
+            }
         };
 
-        fetchSession();
-    }, [pathname]);
+        fetchSession(); // Call fetch function once on mount
+    }, []);
 
+    // Handle user logout
     const handleLogout = async () => {
         await logOut();
+        setSessionData(null); // Clear session data after logout
         router.push("/login"); // Redirect to login page after logout
     };
+
+    // If session data is `undefined`, the session is still being checked; don't render NavBar yet
+    if (sessionData === undefined) {
+        return null; // Don't render anything until session is determined
+    }
 
     return (
         <nav className="bg-gray-800 shadow-md">
@@ -41,7 +52,7 @@ const NavBar = () => {
                     <div className="flex-shrink-0">
                         <Link href="/">
                             <img
-                                src="../favicon.ico" // Replace with your image source
+                                src="../favicon.ico" // Replace with your logo source
                                 alt="Logo"
                                 width={50}
                                 height={50}
@@ -49,10 +60,12 @@ const NavBar = () => {
                             />
                         </Link>
                     </div>
+
                     {/* Right side with navigation links */}
                     <div className="flex items-center space-x-6">
                         {sessionData ? (
                             <>
+                                {/* Show if user is logged in */}
                                 <Link
                                     href="/private/dashboard"
                                     className="text-gray-100 hover:text-white transition duration-300"
@@ -68,6 +81,7 @@ const NavBar = () => {
                             </>
                         ) : (
                             <>
+                                {/* Show if user is not logged in */}
                                 <Link
                                     href="/register"
                                     className="text-gray-100 hover:text-white transition duration-300"
