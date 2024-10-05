@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -10,7 +10,6 @@ import { FormEvent } from "react";
 import { register } from "@/action/user";
 import { useRouter } from "next/navigation";
 import { ClipLoader } from "react-spinners"; // Import the spinner
-import { getAuthSession } from "@/lib/user";
 
 const Register = () => {
     // State variables for form inputs
@@ -20,19 +19,6 @@ const Register = () => {
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false); // State to manage spinner
     const router = useRouter();
-
-    useEffect(() => {
-        const checkUser = async () => {
-            const sessionData = await getAuthSession();
-            const user = sessionData?.user;
-
-            if (user) {
-                router.push("/");
-            }
-        };
-
-        checkUser();
-    }, []);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Prevents the default form submission

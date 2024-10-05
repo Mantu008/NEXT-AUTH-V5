@@ -1,28 +1,8 @@
 "use client";
-
-import { Button } from "@/components/ui/button";
-import toast, { Toaster } from "react-hot-toast";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
-import { getAuthSession } from "@/lib/user";
+import { Toaster } from "react-hot-toast";
 import Link from "next/link";
 
 export default function Home() {
-    const router = useRouter();
-
-    useEffect(() => {
-        const fetchSession = async () => {
-            const sessionData = await getAuthSession();
-            const user = sessionData?.user;
-
-            if (!user) {
-                router.push("/login"); // Redirect to home page if the user is not authenticated
-            }
-        };
-
-        fetchSession();
-    }, []);
-
     return (
         <div className="flex flex-col min-h-screen bg-gray-100 text-gray-800">
             {/* Hero Section */}

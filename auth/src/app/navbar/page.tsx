@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import React from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { getAuthSession } from "@/lib/user";
@@ -19,12 +20,13 @@ const NavBar = () => {
     useEffect(() => {
         const fetchSession = async () => {
             const sessionData = await getAuthSession();
+            console.log("Session Data: ", sessionData); // Debugging output
             const user = sessionData?.user || null;
             setSessionData(user);
         };
 
         fetchSession();
-    }, [pathname]); // This runs every time the URL changes (pathname changes)
+    }, [pathname]);
 
     const handleLogout = async () => {
         await logOut();

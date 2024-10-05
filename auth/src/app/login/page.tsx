@@ -12,26 +12,12 @@ import { useRouter } from "next/navigation";
 import { ClipLoader } from "react-spinners";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { signIn } from "next-auth/react";
-import { getAuthSession } from "@/lib/user"; // Import the server-side function
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
     const router = useRouter();
-
-    useEffect(() => {
-        async function fetchSession() {
-            const sessionData = await getAuthSession();
-            const user = sessionData?.user;
-
-            if (user) {
-                router.push("/");
-            }
-        }
-
-        fetchSession();
-    }, []);
 
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
