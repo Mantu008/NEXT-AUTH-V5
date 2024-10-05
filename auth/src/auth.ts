@@ -90,7 +90,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 try {
                     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
                     const { email, name, image, id } = user;
-                    const response = await axios.post("https://next-auth-v5-git-main-mantu008s-projects.vercel.app/api/providerLogin", {
+                    const response = await axios.post("https://next-auth-v5-lac.vercel.app/api/providerLogin", {
                         email,
                         name,
                         image,

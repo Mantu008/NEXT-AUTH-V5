@@ -5,7 +5,7 @@ export async function POST(request: Request) {
     await dbconnect();
 
     const { email, name, image, id } = await request.json();
-    console.log(email, name, image, id);
+
 
     const userExists = await User.findOne({ email });
 

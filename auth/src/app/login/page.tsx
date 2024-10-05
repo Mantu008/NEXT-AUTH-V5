@@ -8,7 +8,7 @@ import Link from "next/link";
 import toast, { Toaster } from "react-hot-toast";
 import { FormEvent } from "react";
 import { login } from "@/action/user";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ClipLoader } from "react-spinners";
 import { IconBrandGithub, IconBrandGoogle } from "@tabler/icons-react";
 import { signIn } from "next-auth/react";
@@ -109,6 +109,15 @@ const Login = () => {
                             onChange={(e) => setPassword(e.target.value)}
                             className="w-full border-gray-300 rounded-md shadow-sm focus:ring-gray-500 focus:border-gray-500 sm:text-sm"
                         />
+                    </div>
+                    {/* Forgot Password Link */}
+                    <div className="text-right">
+                        <Link
+                            href="/forget-password"
+                            className="text-gray-500 text-sm hover:text-gray-900"
+                        >
+                            Forgot Password?
+                        </Link>
                     </div>
                     <Button
                         type="submit"

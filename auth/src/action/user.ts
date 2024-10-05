@@ -5,6 +5,7 @@
 import { signIn, signOut } from "@/auth"
 import dbconnect from "@/lib/dbConnect"
 import { User } from "@/models/userModel"
+import axios from "axios"
 import bcrypt from 'bcryptjs'
 import { CredentialsSignin } from "next-auth"
 
@@ -81,9 +82,33 @@ const login = async (data: UserLoginData) => {
     }
 };
 
+interface SendPasswordResetEmailData {
+    email: string;
+}
+
+
+const sendPasswordResetEmail = async (data: SendPasswordResetEmailData) => {
+    const { email } = data;
+
+    if (!email) {
+        throw new Error("Please fill Email Field");
+    }
+
+    try {
+        // API call to the backend to send the reset link
+        const response = await axios.post("https://next-auth-v5-git-main-mantu008s-projects.vercel.app/api/forget-password", {
+            email,
+        });
+
+        return response.data; // Expected response from the backend
+    } catch (error: any) {
+        throw new Error(error.response?.data?.message || "Failed to send reset email");
+    }
+};
+
 const logOut = async () => {
     await signOut();
 }
 
 
-export { register, login, logOut };
+export { register, login, logOut, sendPasswordResetEmail };
