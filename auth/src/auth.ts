@@ -86,30 +86,31 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         },
 
         signIn: async ({ user, account }) => {
-            if (account?.provider === "google" || account?.provider === "github") {
+            if (account?.provider === "google") {
                 try {
-                    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-                    const { email, name, image, id } = user;
-                    const response = await axios.post("https://next-auth-v5-lac.vercel.app/api/providerLogin", {
+                    const { email, name, image, id } = user; // Ensure this data is correct
+                    const response = await axios.post("https://next-auth-v5-six-lake.vercel.app/api/providerLogin", {
                         email,
                         name,
                         image,
                         id
                     });
-                    console.log(response);
-                    return true;  // Ensure to return true on successful sign-in
+
+                    if (response.data) {
+                        // Ensure your API responds with the user data expected
+                        return true;  // User is authorized
+                    } else {
+                        console.error("User data not found:", response.data);
+                        return false; // Deny access
+                    }
                 } catch (error) {
                     console.error("Error while creating user:", error);
-                    return false;
+                    return false; // Deny access
                 }
             }
-
-            if (account?.provider === "credentials") {
-                return true;
-            }
-
-            return false;
+            return true; // Allow other sign-in methods
         }
+
 
     }
 });
