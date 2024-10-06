@@ -38,6 +38,6 @@ export const config = {
         "/login",
         "/register",
         "/forget-password",
-        "/reset-password/:path*" // Corrected wildcard for reset-password paths
+        "/reset-password/:path*", // Corrected wildcard for reset-password paths
     ],
 };
