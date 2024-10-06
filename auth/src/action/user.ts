@@ -7,7 +7,6 @@ import dbconnect from "@/lib/dbConnect"
 import { User } from "@/models/userModel"
 import axios from "axios"
 import bcrypt from 'bcryptjs'
-import { CredentialsSignin } from "next-auth"
 
 interface userData {
     firstName: string,

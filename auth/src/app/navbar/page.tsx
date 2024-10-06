@@ -29,7 +29,8 @@ const NavBar = () => {
 
     const handleLogout = async () => {
         await logOut();
-        router.push("/login"); // Redirect to login page after logout
+        setSessionData(null);
+        router.push("/"); // Redirect to login page after logout
     };
 
     return (

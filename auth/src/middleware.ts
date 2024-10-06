@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
     console.log("Middleware triggered for path:", path);
 
     const isPublic =
-        path === "/login" || path === "/register";
+        path === "/login" || path === "/register" || path === "/forget-password";
 
     const sessionData = await getAuthSession();
     const user = sessionData?.user;
