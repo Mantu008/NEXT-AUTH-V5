@@ -95,7 +95,7 @@ const sendPasswordResetEmail = async (data: SendPasswordResetEmailData) => {
 
     try {
         // API call to the backend to send the reset link
-        const response = await axios.post("https://next-auth-v5-git-main-mantu008s-projects.vercel.app/api/forget-password", {
+        const response = await axios.post("https://next-auth-v5-six-lake.vercel.app/api/forget-password", {
             email,
         });
 
