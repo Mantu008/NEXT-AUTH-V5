@@ -49,7 +49,7 @@ export async function POST(request: Request) {
 
 
 
-        const resetUrl = `https://next-auth-v5-git-main-mantu008s-projects.vercel.app/reset-password?token=${resetToken}&email=${user.email}`;
+        const resetUrl = `https://next-auth-v5-six-lake.vercel.app/reset-password?token=${resetToken}&email=${user.email}`;
 
         const mailOptions = {
             to: user.email,

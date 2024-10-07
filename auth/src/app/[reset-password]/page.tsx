@@ -50,7 +50,7 @@ const ResetPassword = () => {
 
             // Make the API request to reset the password
             const response = await axios.post(
-                "https://next-auth-v5-git-main-mantu008s-projects.vercel.app/api/update-password",
+                "https://next-auth-v5-six-lake.vercel.app/api/update-password",
                 {
                     token,
                     email,
