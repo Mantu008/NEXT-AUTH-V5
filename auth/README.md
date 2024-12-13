@@ -14,7 +14,7 @@ pnpm dev
 bun dev
 ```
 
-Open [[https://next-auth-v5-six-lake.vercel.app](https://next-auth-v5-six-lake.vercel.app)](https://next-auth-v5-six-lake.vercel.app/) with your browser to see the result.
+Open [[https://next-auth-v5-six-lake.vercel.app]](https://next-auth-v5-six-lake.vercel.app/) with your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
